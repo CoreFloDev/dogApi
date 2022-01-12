@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">dogApi</string>
+    <string name="list_title">List of dogs</string>
+    <string name="detail_title">Details about a dog</string>
+
+    <string name="retry">Retry</string>
+</resources>
