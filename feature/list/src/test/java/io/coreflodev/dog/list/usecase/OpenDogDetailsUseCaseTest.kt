@@ -9,14 +9,14 @@ import org.junit.Test
 
 class OpenDogDetailsUseCaseTest {
 
-    private val useCase = io.coreflodev.dog.list.usecase.OpenDogDetailsUseCase()
+    private val useCase = OpenDogDetailsUseCase()
 
     @Test
     fun `nominal test case`() = TestScope().runTest {
-        flowOf(io.coreflodev.dog.list.usecase.Action.OpenDetails(ID))
+        flowOf(Action.OpenDetails(ID))
             .let(useCase())
             .test {
-                assertEquals(io.coreflodev.dog.list.usecase.Result.Navigation.OpenDetails(ID), awaitItem())
+                assertEquals(Result.Navigation.OpenDetails(ID), awaitItem())
                 awaitComplete()
             }
     }
