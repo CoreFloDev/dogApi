@@ -1,7 +1,5 @@
 package io.coreflodev.dog.details.ui
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -26,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.common.arch.ScreenView
+import io.coreflodev.dog.common.nav.Nav
 import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.details.arch.DetailsInput
@@ -37,14 +36,6 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 
 class DetailsActivity : ComponentActivity(), ScreenView<DetailsInput, DetailsOutput> {
 
-    companion object {
-        fun getStartingIntent(context: Context, id: String) = Intent(context, DetailsActivity::class.java).apply {
-            putExtra(ID, id)
-        }
-
-        private const val ID = "DOG_ID"
-    }
-
     private lateinit var screen: Screen<DetailsInput, DetailsOutput>
 
     private val inputChannel = MutableSharedFlow<DetailsInput>(extraBufferCapacity = 1)
@@ -54,7 +45,7 @@ class DetailsActivity : ComponentActivity(), ScreenView<DetailsInput, DetailsOut
 
         screen = ViewModelProvider(
             this,
-            DetailsStateHolder.Factory(application, intent.getStringExtra(ID) ?: "")
+            DetailsStateHolder.Factory(application, intent.getStringExtra(Nav.DetailsActivityNav.ID) ?: "")
         )
             .get(DetailsStateHolder::class.java)
             .screen
@@ -95,33 +86,33 @@ class DetailsActivity : ComponentActivity(), ScreenView<DetailsInput, DetailsOut
 @Composable
 fun Content(output: DetailsOutput.Display, input: MutableSharedFlow<DetailsInput>) {
 
-        when(output.uiState) {
-            is UiState.Display -> {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(text = output.uiState.name)
-                    LoadImage(
-                        url = output.uiState.image,
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Text(text = output.uiState.origin)
-                    Text(text = output.uiState.temperament)
-                    Text(text = output.uiState.wikiUrl)
-                }
+    when (output.uiState) {
+        is UiState.Display -> {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(text = output.uiState.name)
+                LoadImage(
+                    url = output.uiState.image,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(text = output.uiState.origin)
+                Text(text = output.uiState.temperament)
+                Text(text = output.uiState.wikiUrl)
             }
-            UiState.Loading -> {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    CircularProgressIndicator()
-                }
+        }
+        UiState.Loading -> {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator()
             }
-            UiState.Retry -> {
-                Button(onClick = {
-                    input.tryEmit(DetailsInput.RetryClicked)
-                }) {
-                    Text(text = stringResource(id = R.string.retry))
-                }
+        }
+        UiState.Retry -> {
+            Button(onClick = {
+                input.tryEmit(DetailsInput.RetryClicked)
+            }) {
+                Text(text = stringResource(id = R.string.retry))
             }
+        }
     }
 }

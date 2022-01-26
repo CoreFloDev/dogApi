@@ -1,4 +1,4 @@
-package io.coreflodev.dog
+package io.coreflodev.dog.list
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("io.coreflodev.dog", appContext.packageName)
+        assertEquals("io.coreflodev.dog.list", appContext.packageName)
     }
 }

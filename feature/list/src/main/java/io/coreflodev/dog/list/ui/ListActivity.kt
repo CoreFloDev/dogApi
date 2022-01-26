@@ -30,9 +30,9 @@ import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.common.arch.ScreenView
+import io.coreflodev.dog.common.nav.Nav
 import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.LoadImage
-import io.coreflodev.dog.details.ui.DetailsActivity
 import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ScreenState
@@ -85,7 +85,7 @@ class ListActivity : ComponentActivity(), ScreenView<ListInput, ListOutput> {
             }
         }
         is ListOutput.OpenDogDetails -> {
-            startActivity(DetailsActivity.getStartingIntent(this, output.id))
+            startActivity(Nav.DetailsActivityNav.getStartingIntent(output.id))
         }
     }
 

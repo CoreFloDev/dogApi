@@ -19,16 +19,16 @@ class DisplayDogListUseCaseTest {
 
     private val repo: DogRepository = mockk()
 
-    private val useCase = DisplayDogListUseCase(repo)
+    private val useCase = io.coreflodev.dog.list.usecase.DisplayDogListUseCase(repo)
 
     @Test
     fun `test loading displayed`() = TestScope().runTest {
         every { repo.getDogList(1) } returns emptyFlow()
 
-        flowOf(Action.InitialAction)
+        flowOf(io.coreflodev.dog.list.usecase.Action.InitialAction)
             .let(useCase())
             .test {
-                assertEquals(Result.UiUpdate.Loading, awaitItem())
+                assertEquals(io.coreflodev.dog.list.usecase.Result.UiUpdate.Loading, awaitItem())
                 awaitComplete()
             }
     }
@@ -37,11 +37,11 @@ class DisplayDogListUseCaseTest {
     fun `test no network`() = TestScope().runTest {
         every { repo.getDogList(1) } returns flow { throw Exception() }
 
-        flowOf(Action.InitialAction)
+        flowOf(io.coreflodev.dog.list.usecase.Action.InitialAction)
             .let(useCase())
             .test {
-                assertEquals(Result.UiUpdate.Loading, awaitItem())
-                assertEquals(Result.UiUpdate.Error, awaitItem())
+                assertEquals(io.coreflodev.dog.list.usecase.Result.UiUpdate.Loading, awaitItem())
+                assertEquals(io.coreflodev.dog.list.usecase.Result.UiUpdate.Error, awaitItem())
                 awaitComplete()
             }
     }
@@ -50,11 +50,11 @@ class DisplayDogListUseCaseTest {
     fun `test list displayed`() = TestScope().runTest {
         every { repo.getDogList(1) } returns flowOf(listOf(Dog("id", "image", listOf(Breed(name = "name")))))
 
-        flowOf(Action.InitialAction)
+        flowOf(io.coreflodev.dog.list.usecase.Action.InitialAction)
             .let(useCase())
             .test {
-                assertEquals(Result.UiUpdate.Loading, awaitItem())
-                assertEquals(Result.UiUpdate.Display(listOf(UiDog("id", "image", "name"))), awaitItem())
+                assertEquals(io.coreflodev.dog.list.usecase.Result.UiUpdate.Loading, awaitItem())
+                assertEquals(io.coreflodev.dog.list.usecase.Result.UiUpdate.Display(listOf(UiDog("id", "image", "name"))), awaitItem())
                 awaitComplete()
             }
     }

@@ -1,4 +1,4 @@
-package io.coreflodev.dog
+package io.coreflodev.dog.list
 
 import org.junit.Test
 

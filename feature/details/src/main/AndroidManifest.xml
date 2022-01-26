@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.coreflodev.dog.details">
+
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_details">
+        <dist:delivery>
+            <dist:install-time />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
+
+    <application>
+        <activity
+            android:name=".ui.DetailsActivity"
+            android:label="@string/detail_title"/>
+    </application>
+</manifest>

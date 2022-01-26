@@ -7,3 +7,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "dogApi"
 include ':app'
+include ':feature:details'
+include ':feature:list'

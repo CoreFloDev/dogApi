@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.coreflodev.dog.list">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <dist:module
+        dist:instant="false"
+        dist:title="@string/title_list">
+        <dist:delivery>
+            <dist:install-time />
+        </dist:delivery>
+        <dist:fusing dist:include="true" />
+    </dist:module>
 
-    <application
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:name=".DogApp"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/defaultTheme"
-        android:supportsRtl="true">
+    <application>
         <activity
             android:name=".list.ui.ListActivity"
             android:exported="true"
@@ -22,5 +24,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

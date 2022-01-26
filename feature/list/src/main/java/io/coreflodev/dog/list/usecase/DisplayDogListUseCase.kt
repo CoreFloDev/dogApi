@@ -15,7 +15,7 @@ class DisplayDogListUseCase(
     operator fun invoke(): (Flow<Action.InitialAction>) -> Flow<Result> = { flow ->
         flow.flatMapLatest {
             repo.getDogList(1)
-                .map<List<Dog>,Result> { dogs -> Result.UiUpdate.Display(dogs.map { UiDog(it.id, it.image, it.breeds.firstOrNull()?.name ?: "") }) }
+                .map<List<Dog>, Result> { dogs -> Result.UiUpdate.Display(dogs.map { UiDog(it.id, it.image, it.breeds.firstOrNull()?.name ?: "") }) }
                 .catch { emit(Result.UiUpdate.Error) }
                 .onStart { emit(Result.UiUpdate.Loading) }
         }

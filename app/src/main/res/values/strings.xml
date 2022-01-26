@@ -4,4 +4,7 @@
     <string name="detail_title">Details about a dog</string>
 
     <string name="retry">Retry</string>
+
+    <string name="title_list">list</string>
+    <string name="title_details">details</string>
 </resources>
