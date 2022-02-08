@@ -6,8 +6,10 @@ import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.common.repo.dog.DogRepository
 import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListNavigation
+import io.coreflodev.dog.list.arch.ListNavigationReducer
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ListScreen
+import io.coreflodev.dog.list.arch.ListUiReducer
 import io.coreflodev.dog.list.usecase.DisplayDogListUseCase
 import io.coreflodev.dog.list.usecase.OpenDogDetailsUseCase
 
@@ -21,7 +23,9 @@ class ListModule {
         openDogDetailsUseCase: OpenDogDetailsUseCase
     ) : Screen<ListInput, ListOutput, ListNavigation> = ListScreen(
         displayDogListUseCase,
-        openDogDetailsUseCase
+        openDogDetailsUseCase,
+        ListNavigationReducer(),
+        ListUiReducer()
     )
 
     @Provides
