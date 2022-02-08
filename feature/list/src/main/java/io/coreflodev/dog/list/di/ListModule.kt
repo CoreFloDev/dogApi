@@ -5,6 +5,7 @@ import dagger.Provides
 import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.common.repo.dog.DogRepository
 import io.coreflodev.dog.list.arch.ListInput
+import io.coreflodev.dog.list.arch.ListNavigation
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ListScreen
 import io.coreflodev.dog.list.usecase.DisplayDogListUseCase
@@ -18,7 +19,7 @@ class ListModule {
     fun provideScreen(
         displayDogListUseCase: DisplayDogListUseCase,
         openDogDetailsUseCase: OpenDogDetailsUseCase
-    ) : Screen<ListInput, ListOutput> = ListScreen(
+    ) : Screen<ListInput, ListOutput, ListNavigation> = ListScreen(
         displayDogListUseCase,
         openDogDetailsUseCase
     )

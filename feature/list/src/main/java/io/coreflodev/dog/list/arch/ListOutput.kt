@@ -2,12 +2,7 @@ package io.coreflodev.dog.list.arch
 
 import io.coreflodev.dog.common.arch.ScreenOutput
 
-sealed class ListOutput : ScreenOutput {
-
-    data class OpenDogDetails(val id: String) : ListOutput()
-
-    data class Display(val state: ScreenState = ScreenState.Loading) : ListOutput()
-}
+data class ListOutput(val state: ScreenState = ScreenState.Loading) : ScreenOutput
 
 sealed class ScreenState {
     object Loading : ScreenState()

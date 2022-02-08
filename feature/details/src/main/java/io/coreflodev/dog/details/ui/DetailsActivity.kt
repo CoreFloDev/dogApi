@@ -25,6 +25,7 @@ import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.details.arch.DetailsInput
+import io.coreflodev.dog.details.arch.DetailsNavigation
 import io.coreflodev.dog.details.arch.DetailsOutput
 import io.coreflodev.dog.details.arch.UiState
 import io.coreflodev.dog.details.di.DetailsStateHolder
@@ -32,7 +33,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 
 class DetailsActivity : ComponentActivity() {
 
-    private lateinit var screen: Screen<DetailsInput, DetailsOutput>
+    private lateinit var screen: Screen<DetailsInput, DetailsOutput, DetailsNavigation>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

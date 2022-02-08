@@ -17,7 +17,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +32,14 @@ import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.list.arch.ListInput
+import io.coreflodev.dog.list.arch.ListNavigation
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ScreenState
 import io.coreflodev.dog.list.di.ListStateHolder
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.filterNot
-import kotlinx.coroutines.flow.launchIn
 
 class ListActivity : ComponentActivity() {
 
-    private lateinit var screen: Screen<ListInput, ListOutput>
+    private lateinit var screen: Screen<ListInput, ListOutput, ListNavigation>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,20 +51,20 @@ class ListActivity : ComponentActivity() {
             .get(ListStateHolder::class.java)
             .screen
 
+        val (output, input, navigation) = screen.attach()
+
         setContent {
             DogApiTheme {
-                val (output, input) = screen.attach()
-                val state = output.filterIsInstance<ListOutput.Display>().collectAsState(ListOutput.Display())
+                val state = output.collectAsState(ListOutput())
 
                 BaseUi(id = R.string.list_title) {
                     Content(output = state.value, input = input)
                 }
 
                 LaunchedEffect(true) {
-                    output.filterNot { it is ListOutput.Display }.collect { output ->
+                    navigation.collect { output ->
                         when (output) {
-                            is ListOutput.Display -> { }
-                            is ListOutput.OpenDogDetails -> startActivity(Nav.DetailsActivityNav.getStartingIntent(output.id))
+                            is ListNavigation.OpenDogDetails -> startActivity(Nav.DetailsActivityNav.getStartingIntent(output.id))
                         }
                     }
                 }
@@ -83,7 +79,7 @@ class ListActivity : ComponentActivity() {
 }
 
 @Composable
-fun Content(output: ListOutput.Display, input: (ListInput) -> Unit) {
+fun Content(output: ListOutput, input: (ListInput) -> Unit) {
     when (output.state) {
         is ScreenState.Display -> {
             LazyColumn {

@@ -12,16 +12,15 @@ import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 
 class ListScreen(
     private val displayDogListUseCase: DisplayDogListUseCase,
     private val openDogDetailsUseCase: OpenDogDetailsUseCase
-) : Screen<ListInput, ListOutput>() {
+) : Screen<ListInput, ListOutput, ListNavigation>() {
 
-    override fun output(): Flow<ListOutput> = input()
+    override fun output() = input()
         .let(inputToAction())
         .let { stream ->
             val upstream = stream.shareIn(scope, SharingStarted.Eagerly, 1)
@@ -45,20 +44,18 @@ class ListScreen(
                 .onStart { emit(Action.InitialAction) }
         }
 
-        fun convertResultToOutput(clear: CoroutineScope) : (Flow<Result>) -> Flow<ListOutput> = { stream ->
+        fun convertResultToOutput(clear: CoroutineScope) : (Flow<Result>) -> Pair<Flow<ListOutput>, Flow<ListNavigation>> = { stream ->
             val upstream = stream.shareIn(clear, SharingStarted.Lazily)
 
-            listOf(
                 upstream.filterIsInstance<Result.UiUpdate>()
                     .let(reducingUiState())
-                    .shareIn(clear, SharingStarted.Lazily, 1),
+                    .shareIn(clear, SharingStarted.Lazily, 1) to
                 upstream.filterIsInstance<Result.Navigation>()
                     .let(reducingNavigation())
-            ).merge()
         }
 
-        private fun reducingUiState() :(Flow<Result.UiUpdate>) -> Flow<ListOutput.Display> = { stream ->
-            stream.scan(ListOutput.Display()) { previous, new ->
+        private fun reducingUiState() :(Flow<Result.UiUpdate>) -> Flow<ListOutput> = { stream ->
+            stream.scan(ListOutput()) { previous, new ->
                 when (new) {
                     is Result.UiUpdate.Display -> previous.copy(state = ScreenState.Display(new.uiDogs))
                     Result.UiUpdate.Error -> previous.copy(state = ScreenState.Retry)
@@ -67,10 +64,10 @@ class ListScreen(
             }
         }
 
-        private fun reducingNavigation() :(Flow<Result.Navigation>) -> Flow<ListOutput> = { stream ->
+        private fun reducingNavigation() :(Flow<Result.Navigation>) -> Flow<ListNavigation> = { stream ->
             stream.map {navigation ->
                 when (navigation) {
-                    is Result.Navigation.OpenDetails -> ListOutput.OpenDogDetails(navigation.id)
+                    is Result.Navigation.OpenDetails -> ListNavigation.OpenDogDetails(navigation.id)
                 }
             }
         }

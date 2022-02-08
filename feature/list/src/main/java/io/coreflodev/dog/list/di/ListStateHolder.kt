@@ -7,13 +7,14 @@ import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.DogApp
 import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.list.arch.ListInput
+import io.coreflodev.dog.list.arch.ListNavigation
 import io.coreflodev.dog.list.arch.ListOutput
 import javax.inject.Inject
 
 class ListStateHolder(app: Application): AndroidViewModel(app) {
 
     @Inject
-    lateinit var screen: Screen<ListInput, ListOutput>
+    lateinit var screen: Screen<ListInput, ListOutput, ListNavigation>
 
     init {
         DaggerListComponent.builder()

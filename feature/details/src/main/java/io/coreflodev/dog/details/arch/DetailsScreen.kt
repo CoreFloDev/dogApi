@@ -11,16 +11,15 @@ import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 
 class DetailsScreen(
     private val displayDogDetailsUseCase: DisplayDogDetailsUseCase
-) : Screen<DetailsInput, DetailsOutput>() {
+) : Screen<DetailsInput, DetailsOutput, DetailsNavigation>() {
 
-    override fun output(): Flow<DetailsOutput> = input()
+    override fun output() = input()
         .let(inputToAction())
         .let { stream ->
             val upstream = stream.shareIn(scope, SharingStarted.Eagerly, 1)
@@ -39,16 +38,14 @@ class DetailsScreen(
                 .onStart { emit(Action.InitialAction) }
         }
 
-        fun convertResultToOutput(clear: CoroutineScope): (Flow<Result>) -> Flow<DetailsOutput> = { stream ->
+        fun convertResultToOutput(clear: CoroutineScope): (Flow<Result>) -> Pair<Flow<DetailsOutput>, Flow<DetailsNavigation>> = { stream ->
             val upstream = stream.shareIn(clear, SharingStarted.Lazily)
 
-            listOf(
-                upstream.filterIsInstance<Result.UiUpdate>()
-                    .let(reducingUiState())
-                    .shareIn(clear, SharingStarted.Lazily, 1),
-                upstream.filterIsInstance<Result.Navigation>()
-                    .let(reducingNavigation())
-            ).merge()
+            upstream.filterIsInstance<Result.UiUpdate>()
+                .let(reducingUiState())
+                .shareIn(clear, SharingStarted.Lazily, 1) to
+                    upstream.filterIsInstance<Result.Navigation>()
+                        .let(reducingNavigation())
         }
 
         private fun reducingUiState(): (Flow<Result.UiUpdate>) -> Flow<DetailsOutput.Display> = { stream ->
@@ -69,7 +66,7 @@ class DetailsScreen(
             }
         }
 
-        private fun reducingNavigation(): (Flow<Result.Navigation>) -> Flow<DetailsOutput> = { stream ->
+        private fun reducingNavigation(): (Flow<Result.Navigation>) -> Flow<DetailsNavigation> = { stream ->
             stream.flatMapLatest { emptyFlow() }
         }
     }

@@ -6,12 +6,10 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
-abstract class Screen<I : ScreenInput, O : ScreenOutput> {
+abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation> {
 
     private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     protected val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
@@ -24,23 +22,23 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput> {
             .receiveAsFlow()
             .flowOn(Dispatchers.Default)
 
-    protected abstract fun output(): Flow<O>
+    protected abstract fun output(): Pair<Flow<O>, Flow<N>>
 
     fun terminate() {
         scope.cancel()
     }
 
-    fun attach() : Pair<Flow<O>, (I) -> Unit> {
+    fun attach(): Attach<I, O, N> {
         viewScope = CoroutineScope(Dispatchers.Main)
 
-        return output to { data ->
-            viewScope.launch {
-                input.send(data)
-            }
-        }
-    }
+        val (out, nav) = output
 
-    fun outputView() : Flow<O> = output
+        return Attach(
+            output = out,
+            input = { data -> viewScope.launch { input.send(data) } },
+            navigation = nav
+        )
+    }
 
     fun detach() {
         viewScope.cancel()
