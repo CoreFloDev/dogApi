@@ -10,12 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,22 +20,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.Screen
-import io.coreflodev.dog.common.arch.ScreenView
 import io.coreflodev.dog.common.nav.Nav
 import io.coreflodev.dog.common.theme.DogApiTheme
+import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.details.arch.DetailsInput
 import io.coreflodev.dog.details.arch.DetailsOutput
 import io.coreflodev.dog.details.arch.UiState
 import io.coreflodev.dog.details.di.DetailsStateHolder
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 
-class DetailsActivity : ComponentActivity(), ScreenView<DetailsInput, DetailsOutput> {
+class DetailsActivity : ComponentActivity() {
 
     private lateinit var screen: Screen<DetailsInput, DetailsOutput>
-
-    private val inputChannel = MutableSharedFlow<DetailsInput>(extraBufferCapacity = 1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,41 +43,29 @@ class DetailsActivity : ComponentActivity(), ScreenView<DetailsInput, DetailsOut
             .get(DetailsStateHolder::class.java)
             .screen
 
-        screen.attach(this)
-    }
-
-    override fun onDestroy() {
-        screen.detach()
-        super.onDestroy()
-    }
-
-    override fun render(output: DetailsOutput) = when (output) {
-        is DetailsOutput.Display -> {
-            setContent {
-                DogApiTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(color = MaterialTheme.colors.background) {
-                        Scaffold(
-                            topBar = {
-                                TopAppBar(
-                                    title = { Text(stringResource(id = R.string.detail_title)) }
-                                )
-                            },
-                            content = {
-                                Content(output = output, inputChannel)
-                            }
-                        )
+        setContent {
+            DogApiTheme {
+                val (output, input) = screen.attach()
+                val state = output.collectAsState(initial = DetailsOutput.Display())
+                when (state.value) {
+                    is DetailsOutput.Display -> {
+                        BaseUi(id = R.string.detail_title) {
+                            Content(output = state.value as DetailsOutput.Display, input = input)
+                        }
                     }
                 }
             }
         }
     }
 
-    override fun inputs(): Flow<DetailsInput> = inputChannel
+    override fun onDestroy() {
+        screen.detach()
+        super.onDestroy()
+    }
 }
 
 @Composable
-fun Content(output: DetailsOutput.Display, input: MutableSharedFlow<DetailsInput>) {
+fun Content(output: DetailsOutput.Display, input: (DetailsInput) -> Unit) {
 
     when (output.uiState) {
         is UiState.Display -> {
@@ -109,7 +90,7 @@ fun Content(output: DetailsOutput.Display, input: MutableSharedFlow<DetailsInput
         }
         UiState.Retry -> {
             Button(onClick = {
-                input.tryEmit(DetailsInput.RetryClicked)
+                input(DetailsInput.RetryClicked)
             }) {
                 Text(text = stringResource(id = R.string.retry))
             }

@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 
@@ -21,7 +20,7 @@ class DetailsScreen(
     private val displayDogDetailsUseCase: DisplayDogDetailsUseCase
 ) : Screen<DetailsInput, DetailsOutput>() {
 
-    override fun output(): Flow<DetailsOutput> = input.receiveAsFlow()
+    override fun output(): Flow<DetailsOutput> = input()
         .let(inputToAction())
         .let { stream ->
             val upstream = stream.shareIn(scope, SharingStarted.Eagerly, 1)

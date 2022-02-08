@@ -21,7 +21,7 @@ class ListScreen(
     private val openDogDetailsUseCase: OpenDogDetailsUseCase
 ) : Screen<ListInput, ListOutput>() {
 
-    override fun output(): Flow<ListOutput> = input.receiveAsFlow()
+    override fun output(): Flow<ListOutput> = input()
         .let(inputToAction())
         .let { stream ->
             val upstream = stream.shareIn(scope, SharingStarted.Eagerly, 1)

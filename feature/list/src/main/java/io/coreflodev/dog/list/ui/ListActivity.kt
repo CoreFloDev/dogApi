@@ -14,12 +14,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,22 +26,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.Screen
-import io.coreflodev.dog.common.arch.ScreenView
 import io.coreflodev.dog.common.nav.Nav
 import io.coreflodev.dog.common.theme.DogApiTheme
+import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ScreenState
 import io.coreflodev.dog.list.di.ListStateHolder
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 
-class ListActivity : ComponentActivity(), ScreenView<ListInput, ListOutput> {
+class ListActivity : ComponentActivity() {
 
     private lateinit var screen: Screen<ListInput, ListOutput>
-
-    private val inputChannel = MutableSharedFlow<ListInput>(extraBufferCapacity = 1)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,44 +49,33 @@ class ListActivity : ComponentActivity(), ScreenView<ListInput, ListOutput> {
             .get(ListStateHolder::class.java)
             .screen
 
-        screen.attach(this)
+        setContent {
+            DogApiTheme {
+                val (output, input) = screen.attach()
+                val state = output.collectAsState(ListOutput.Display())
+
+                when (val value = state.value) {
+                    is ListOutput.Display -> {
+                        BaseUi(id = R.string.list_title) {
+                            Content(output = value, input = input)
+                        }
+                    }
+                    is ListOutput.OpenDogDetails -> {
+                        startActivity(Nav.DetailsActivityNav.getStartingIntent(value.id))
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
         screen.detach()
         super.onDestroy()
     }
-
-    override fun render(output: ListOutput) = when (output) {
-        is ListOutput.Display -> {
-            setContent {
-                DogApiTheme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(color = MaterialTheme.colors.background) {
-                        Scaffold(
-                            topBar = {
-                                TopAppBar(
-                                    title = { Text(stringResource(id = R.string.list_title)) }
-                                )
-                            },
-                            content = {
-                                Content(output = output, input = inputChannel)
-                            }
-                        )
-                    }
-                }
-            }
-        }
-        is ListOutput.OpenDogDetails -> {
-            startActivity(Nav.DetailsActivityNav.getStartingIntent(output.id))
-        }
-    }
-
-    override fun inputs(): Flow<ListInput> = inputChannel
 }
 
 @Composable
-fun Content(output: ListOutput.Display, input: MutableSharedFlow<ListInput>) {
+fun Content(output: ListOutput.Display, input: (ListInput) -> Unit) {
     when (output.state) {
         is ScreenState.Display -> {
             LazyColumn {
@@ -104,7 +86,7 @@ fun Content(output: ListOutput.Display, input: MutableSharedFlow<ListInput>) {
                             .height(250.dp)
                             .padding(bottom = 32.dp)
                             .clickable {
-                                input.tryEmit(ListInput.PictureClicked(item.id))
+                                input(ListInput.PictureClicked(item.id))
                             }
                     ) {
                         LoadImage(
@@ -136,7 +118,7 @@ fun Content(output: ListOutput.Display, input: MutableSharedFlow<ListInput>) {
         }
         ScreenState.Retry -> {
             Button(onClick = {
-                input.tryEmit(ListInput.RetryClicked)
+                input(ListInput.RetryClicked)
             }) {
                 Text(text = stringResource(id = R.string.retry))
             }

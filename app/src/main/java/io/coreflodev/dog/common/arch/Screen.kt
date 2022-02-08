@@ -8,14 +8,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 
 abstract class Screen<I : ScreenInput, O : ScreenOutput> {
 
-    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Main)
+    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
     protected val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
 
-    protected val input: Channel<I> = Channel()
+    private val input: Channel<I> = Channel()
     private val output by lazy { output() }
+
+    protected fun input(): Flow<I> =
+        input
+            .receiveAsFlow()
+            .flowOn(Dispatchers.Default)
 
     protected abstract fun output(): Flow<O>
 
@@ -23,18 +30,17 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput> {
         scope.cancel()
     }
 
-    fun attach(view: ScreenView<I, O>) {
+    fun attach() : Pair<Flow<O>, (I) -> Unit> {
         viewScope = CoroutineScope(Dispatchers.Main)
 
-        output
-            .onEach(view::render)
-            .launchIn(viewScope)
-
-        view.inputs()
-            .flowOn(Dispatchers.Default)
-            .onEach(input::send)
-            .launchIn(viewScope)
+        return output to { data ->
+            viewScope.launch {
+                input.send(data)
+            }
+        }
     }
+
+    fun outputView() : Flow<O> = output
 
     fun detach() {
         viewScope.cancel()

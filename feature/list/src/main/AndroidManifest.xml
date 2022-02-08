@@ -14,12 +14,12 @@
 
     <application>
         <activity
-            android:name=".list.ui.ListActivity"
+            android:name=".ui.ListActivity"
             android:exported="true"
             android:label="@string/list_title">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

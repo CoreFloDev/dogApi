@@ -10,17 +10,6 @@
         android:name=".DogApp"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/defaultTheme"
-        android:supportsRtl="true">
-        <activity
-            android:name=".list.ui.ListActivity"
-            android:exported="true"
-            android:label="@string/list_title">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
+        android:supportsRtl="true"/>
 
 </manifest>
