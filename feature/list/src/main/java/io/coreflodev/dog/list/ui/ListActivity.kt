@@ -16,6 +16,8 @@ import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +36,10 @@ import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ScreenState
 import io.coreflodev.dog.list.di.ListStateHolder
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.launchIn
 
 class ListActivity : ComponentActivity() {
 
@@ -52,16 +58,18 @@ class ListActivity : ComponentActivity() {
         setContent {
             DogApiTheme {
                 val (output, input) = screen.attach()
-                val state = output.collectAsState(ListOutput.Display())
+                val state = output.filterIsInstance<ListOutput.Display>().collectAsState(ListOutput.Display())
 
-                when (val value = state.value) {
-                    is ListOutput.Display -> {
-                        BaseUi(id = R.string.list_title) {
-                            Content(output = value, input = input)
+                BaseUi(id = R.string.list_title) {
+                    Content(output = state.value, input = input)
+                }
+
+                LaunchedEffect(true) {
+                    output.filterNot { it is ListOutput.Display }.collect { output ->
+                        when (output) {
+                            is ListOutput.Display -> { }
+                            is ListOutput.OpenDogDetails -> startActivity(Nav.DetailsActivityNav.getStartingIntent(output.id))
                         }
-                    }
-                    is ListOutput.OpenDogDetails -> {
-                        startActivity(Nav.DetailsActivityNav.getStartingIntent(value.id))
                     }
                 }
             }

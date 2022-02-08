@@ -28,6 +28,7 @@ import io.coreflodev.dog.details.arch.DetailsInput
 import io.coreflodev.dog.details.arch.DetailsOutput
 import io.coreflodev.dog.details.arch.UiState
 import io.coreflodev.dog.details.di.DetailsStateHolder
+import kotlinx.coroutines.flow.filterIsInstance
 
 class DetailsActivity : ComponentActivity() {
 
@@ -46,13 +47,9 @@ class DetailsActivity : ComponentActivity() {
         setContent {
             DogApiTheme {
                 val (output, input) = screen.attach()
-                val state = output.collectAsState(initial = DetailsOutput.Display())
-                when (state.value) {
-                    is DetailsOutput.Display -> {
-                        BaseUi(id = R.string.detail_title) {
-                            Content(output = state.value as DetailsOutput.Display, input = input)
-                        }
-                    }
+                val state = output.filterIsInstance<DetailsOutput.Display>().collectAsState(initial = DetailsOutput.Display())
+                BaseUi(id = R.string.detail_title) {
+                    Content(output = state.value, input = input)
                 }
             }
         }
