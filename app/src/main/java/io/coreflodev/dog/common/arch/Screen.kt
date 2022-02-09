@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation>(
-    private val reducingUiState: (Flow<ResultUiUpdate>) -> Flow<O>,
-    private val reducingNavigation: (Flow<ResultNavigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
+    private val reducingUiState: (Flow<DomainResult.UiUpdate>) -> Flow<O>,
+    private val reducingNavigation: (Flow<DomainResult.Navigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
 ) {
 
     private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
@@ -52,15 +52,14 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation>(
         viewScope.cancel()
     }
 
-    fun convertResultToOutput():
-                (Flow<Any>) -> Pair<Flow<O>, Flow<N>> =
+    fun convertResultToOutput(): (Flow<DomainResult>) -> Pair<Flow<O>, Flow<N>> =
         { stream ->
             val upstream = stream.shareIn(scope, SharingStarted.Lazily)
 
-            upstream.filterIsInstance<ResultUiUpdate>()
+            upstream.filterIsInstance<DomainResult.UiUpdate>()
                 .let(reducingUiState)
                 .shareIn(scope, SharingStarted.Lazily, 1) to
-                    upstream.filterIsInstance<ResultNavigation>()
+                    upstream.filterIsInstance<DomainResult.Navigation>()
                         .let(reducingNavigation)
         }
 }

@@ -1,3 +1,6 @@
 package io.coreflodev.dog.common.arch
 
-interface ResultNavigation
+interface DomainResult {
+    interface Navigation: DomainResult
+    interface UiUpdate: DomainResult
+}
