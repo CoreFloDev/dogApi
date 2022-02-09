@@ -14,18 +14,17 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
-abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : DomainAction, R : DomainResult>(
+open class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : DomainAction, R : DomainResult>(
     private val reducingAction: (Flow<I>) -> Flow<A>,
+    private val useCaseAggregator: UseCaseAggregator<A, R>,
     private val reducingUiState: (Flow<DomainResult.UiUpdate>) -> Flow<O>,
     private val reducingNavigation: (Flow<DomainResult.Navigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
 ) {
 
     private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
-    protected val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
+    private val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val input: Channel<I> = Channel()
-
-    protected abstract fun output(): (Flow<A>) -> Flow<R>
 
     fun terminate() {
         scope.cancel()
@@ -38,7 +37,7 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A
             .receiveAsFlow()
             .flowOn(Dispatchers.Default)
             .let(reducingAction)
-            .let(output())
+            .let(useCaseAggregator.execute(scope))
             .let(convertResultToOutput())
 
         return Attach(
