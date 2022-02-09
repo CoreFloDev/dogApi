@@ -1,9 +1,9 @@
 package io.coreflodev.dog.common.di
 
 import android.content.Context
-import com.example.flow_arch.common.di.AppScope
 import dagger.Module
 import dagger.Provides
+import io.coreflodev.dog.common.nav.Navigation
 import io.coreflodev.dog.common.repo.dog.DogRepository
 import io.coreflodev.dog.common.repo.dog.RestApiDogRepository
 import io.coreflodev.dog.common.repo.dog.network.DogApi
@@ -53,4 +53,8 @@ class AppModule(private val context: Context) {
     @Provides
     @AppScope
     fun provideDogRepository(dogApi: DogApi): DogRepository = RestApiDogRepository(dogApi)
+
+    @Provides
+    @AppScope
+    fun provideNavigation(context: Context) = Navigation(context)
 }

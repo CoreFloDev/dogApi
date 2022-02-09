@@ -1,7 +1,7 @@
 package io.coreflodev.dog.common.di
 
-import com.example.flow_arch.common.di.AppScope
 import dagger.Component
+import io.coreflodev.dog.common.nav.Navigation
 import io.coreflodev.dog.common.repo.dog.DogRepository
 
 @AppScope
@@ -9,4 +9,6 @@ import io.coreflodev.dog.common.repo.dog.DogRepository
 interface AppComponent {
 
     fun movieRepo(): DogRepository
+
+    fun navigation(): Navigation
 }

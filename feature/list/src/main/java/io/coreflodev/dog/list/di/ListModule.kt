@@ -3,6 +3,7 @@ package io.coreflodev.dog.list.di
 import dagger.Module
 import dagger.Provides
 import io.coreflodev.dog.common.arch.Screen
+import io.coreflodev.dog.common.nav.Navigation
 import io.coreflodev.dog.common.repo.dog.DogRepository
 import io.coreflodev.dog.list.arch.ListActionReducer
 import io.coreflodev.dog.list.arch.ListInput
@@ -23,12 +24,13 @@ class ListModule {
     @ListScope
     fun provideScreen(
         displayDogListUseCase: DisplayDogListUseCase,
-        openDogDetailsUseCase: OpenDogDetailsUseCase
+        openDogDetailsUseCase: OpenDogDetailsUseCase,
+        navigation: Navigation
     ) : Screen<ListInput, ListOutput, ListNavigation, Action, Result> = ListScreen(
         displayDogListUseCase,
         openDogDetailsUseCase,
         ListActionReducer(),
-        ListNavigationReducer(),
+        ListNavigationReducer(navigation),
         ListUiReducer()
     )
 

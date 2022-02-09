@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.Screen
-import io.coreflodev.dog.common.nav.Nav
+import io.coreflodev.dog.common.nav.Navigation
 import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
@@ -41,7 +41,7 @@ class DetailsActivity : ComponentActivity() {
 
         screen = ViewModelProvider(
             this,
-            DetailsStateHolder.Factory(application, intent.getStringExtra(Nav.DetailsActivityNav.ID) ?: "")
+            DetailsStateHolder.Factory(application, intent.getStringExtra(Navigation.DetailsActivityNav.ID) ?: "")
         )
             .get(DetailsStateHolder::class.java)
             .screen

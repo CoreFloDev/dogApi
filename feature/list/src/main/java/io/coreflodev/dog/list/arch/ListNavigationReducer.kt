@@ -1,14 +1,18 @@
 package io.coreflodev.dog.list.arch
 
+import io.coreflodev.dog.common.nav.Navigation
 import io.coreflodev.dog.list.domain.Result
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flow
 
-class ListNavigationReducer {
-    operator fun invoke() :(Flow<Result.Navigation>) -> Flow<ListNavigation> = { stream ->
-        stream.map {navigation ->
-            when (navigation) {
-                is Result.Navigation.OpenDetails -> ListNavigation.OpenDogDetails(navigation.id)
+class ListNavigationReducer(private val nav: Navigation) {
+    operator fun invoke(): (Flow<Result.Navigation>) -> Flow<ListNavigation> = { stream ->
+        stream.flatMapConcat { navigation ->
+            flow {
+                when (navigation) {
+                    is Result.Navigation.OpenDetails -> nav.startDetailsActivity(navigation.id)
+                }
             }
         }
     }

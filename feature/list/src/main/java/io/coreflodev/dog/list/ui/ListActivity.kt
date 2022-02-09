@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.Screen
-import io.coreflodev.dog.common.nav.Nav
 import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
@@ -64,11 +63,7 @@ class ListActivity : ComponentActivity() {
                 }
 
                 LaunchedEffect(true) {
-                    navigation.collect { output ->
-                        when (output) {
-                            is ListNavigation.OpenDogDetails -> startActivity(Nav.DetailsActivityNav.getStartingIntent(output.id))
-                        }
-                    }
+                    navigation.collect { }
                 }
             }
         }

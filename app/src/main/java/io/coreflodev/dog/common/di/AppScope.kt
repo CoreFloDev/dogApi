@@ -1,4 +1,4 @@
-package com.example.flow_arch.common.di
+package io.coreflodev.dog.common.di
 
 import javax.inject.Scope
 
