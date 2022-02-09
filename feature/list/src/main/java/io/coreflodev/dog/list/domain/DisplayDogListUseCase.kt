@@ -1,4 +1,4 @@
-package io.coreflodev.dog.list.usecase
+package io.coreflodev.dog.list.domain
 
 import io.coreflodev.dog.common.repo.dog.network.Dog
 import io.coreflodev.dog.common.repo.dog.DogRepository

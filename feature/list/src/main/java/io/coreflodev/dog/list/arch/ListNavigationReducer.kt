@@ -1,6 +1,6 @@
 package io.coreflodev.dog.list.arch
 
-import io.coreflodev.dog.list.usecase.Result
+import io.coreflodev.dog.list.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

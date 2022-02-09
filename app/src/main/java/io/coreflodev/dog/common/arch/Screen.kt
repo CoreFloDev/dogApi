@@ -14,7 +14,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
-abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, R: DomainResult>(
+abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : DomainAction, R : DomainResult>(
+    private val reducingAction: (Flow<I>) -> Flow<A>,
     private val reducingUiState: (Flow<DomainResult.UiUpdate>) -> Flow<O>,
     private val reducingNavigation: (Flow<DomainResult.Navigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
 ) {
@@ -23,14 +24,8 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, R
     protected val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val input: Channel<I> = Channel()
-    private val output by lazy { output() }
 
-    protected fun input(): Flow<I> =
-        input
-            .receiveAsFlow()
-            .flowOn(Dispatchers.Default)
-
-    protected abstract fun output(): Flow<R>
+    protected abstract fun output(): (Flow<A>) -> Flow<R>
 
     fun terminate() {
         scope.cancel()
@@ -39,7 +34,11 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, R
     fun attach(): Attach<I, O, N> {
         viewScope = CoroutineScope(Dispatchers.Main)
 
-        val (out, nav) = output
+        val (out, nav) = input
+            .receiveAsFlow()
+            .flowOn(Dispatchers.Default)
+            .let(reducingAction)
+            .let(output())
             .let(convertResultToOutput())
 
         return Attach(

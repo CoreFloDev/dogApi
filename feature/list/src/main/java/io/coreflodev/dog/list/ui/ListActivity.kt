@@ -36,11 +36,12 @@ import io.coreflodev.dog.list.arch.ListNavigation
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ScreenState
 import io.coreflodev.dog.list.di.ListStateHolder
-import io.coreflodev.dog.list.usecase.Result
+import io.coreflodev.dog.list.domain.Action
+import io.coreflodev.dog.list.domain.Result
 
 class ListActivity : ComponentActivity() {
 
-    private lateinit var screen: Screen<ListInput, ListOutput, ListNavigation, Result>
+    private lateinit var screen: Screen<ListInput, ListOutput, ListNavigation, Action, Result>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

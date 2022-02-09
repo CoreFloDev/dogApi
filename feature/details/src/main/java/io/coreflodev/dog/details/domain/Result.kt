@@ -1,4 +1,4 @@
-package io.coreflodev.dog.details.usecase
+package io.coreflodev.dog.details.domain
 
 import io.coreflodev.dog.common.arch.DomainResult
 

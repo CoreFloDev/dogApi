@@ -4,15 +4,17 @@ import dagger.Module
 import dagger.Provides
 import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.common.repo.dog.DogRepository
+import io.coreflodev.dog.list.arch.ListActionReducer
 import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListNavigation
 import io.coreflodev.dog.list.arch.ListNavigationReducer
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ListScreen
 import io.coreflodev.dog.list.arch.ListUiReducer
-import io.coreflodev.dog.list.usecase.DisplayDogListUseCase
-import io.coreflodev.dog.list.usecase.OpenDogDetailsUseCase
-import io.coreflodev.dog.list.usecase.Result
+import io.coreflodev.dog.list.domain.Action
+import io.coreflodev.dog.list.domain.DisplayDogListUseCase
+import io.coreflodev.dog.list.domain.OpenDogDetailsUseCase
+import io.coreflodev.dog.list.domain.Result
 
 @Module
 class ListModule {
@@ -22,9 +24,10 @@ class ListModule {
     fun provideScreen(
         displayDogListUseCase: DisplayDogListUseCase,
         openDogDetailsUseCase: OpenDogDetailsUseCase
-    ) : Screen<ListInput, ListOutput, ListNavigation, Result> = ListScreen(
+    ) : Screen<ListInput, ListOutput, ListNavigation, Action, Result> = ListScreen(
         displayDogListUseCase,
         openDogDetailsUseCase,
+        ListActionReducer(),
         ListNavigationReducer(),
         ListUiReducer()
     )

@@ -1,4 +1,4 @@
-package io.coreflodev.dog.list.usecase
+package io.coreflodev.dog.list.domain
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

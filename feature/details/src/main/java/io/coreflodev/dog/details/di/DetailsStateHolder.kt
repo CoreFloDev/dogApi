@@ -9,13 +9,14 @@ import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.details.arch.DetailsInput
 import io.coreflodev.dog.details.arch.DetailsNavigation
 import io.coreflodev.dog.details.arch.DetailsOutput
-import io.coreflodev.dog.details.usecase.Result
+import io.coreflodev.dog.details.domain.Action
+import io.coreflodev.dog.details.domain.Result
 import javax.inject.Inject
 
 class DetailsStateHolder (app: Application, imageId: String): AndroidViewModel(app) {
 
     @Inject
-    lateinit var screen: Screen<DetailsInput, DetailsOutput, DetailsNavigation, Result>
+    lateinit var screen: Screen<DetailsInput, DetailsOutput, DetailsNavigation, Action, Result>
 
     init {
         DaggerDetailsComponent.builder()

@@ -1,4 +1,4 @@
-package io.coreflodev.dog.details.usecase
+package io.coreflodev.dog.details.domain
 
 import app.cash.turbine.test
 import io.coreflodev.dog.common.repo.dog.DogRepository
