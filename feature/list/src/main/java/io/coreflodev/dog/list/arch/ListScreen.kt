@@ -1,10 +1,10 @@
 package io.coreflodev.dog.list.arch
 
-import io.coreflodev.dog.common.arch.ResultNavigation
-import io.coreflodev.dog.common.arch.ResultUiUpdate
+import io.coreflodev.dog.common.arch.DomainResult
 import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.list.usecase.Action
 import io.coreflodev.dog.list.usecase.DisplayDogListUseCase
+import io.coreflodev.dog.list.usecase.Result
 import io.coreflodev.dog.list.usecase.OpenDogDetailsUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,7 +19,7 @@ class ListScreen(
     private val openDogDetailsUseCase: OpenDogDetailsUseCase,
     listNavigationReducer: ListNavigationReducer,
     listUiReducer: ListUiReducer
-) : Screen<ListInput, ListOutput, ListNavigation>(listUiReducer() as (Flow<ResultUiUpdate>) -> Flow<ListOutput>, listNavigationReducer() as (Flow<ResultNavigation>) -> Flow<ListNavigation>) {
+) : Screen<ListInput, ListOutput, ListNavigation>(listUiReducer() as (Flow<DomainResult.UiUpdate>) -> Flow<ListOutput>, listNavigationReducer() as (Flow<DomainResult.Navigation>) -> Flow<ListNavigation>) {
 
     override fun output() = input()
         .let(inputToAction())

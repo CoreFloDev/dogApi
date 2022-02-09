@@ -2,8 +2,8 @@ package io.coreflodev.dog.details.usecase
 
 import io.coreflodev.dog.common.arch.DomainResult
 
-sealed class DetailsResult {
-    sealed class UiUpdate : DetailsResult(), DomainResult.UiUpdate {
+sealed class Result : DomainResult {
+    sealed class UiUpdate : Result(), DomainResult.UiUpdate {
         object Loading : UiUpdate()
         object Retry : UiUpdate()
         data class Display(
