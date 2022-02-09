@@ -12,6 +12,7 @@ import io.coreflodev.dog.list.arch.ListScreen
 import io.coreflodev.dog.list.arch.ListUiReducer
 import io.coreflodev.dog.list.usecase.DisplayDogListUseCase
 import io.coreflodev.dog.list.usecase.OpenDogDetailsUseCase
+import io.coreflodev.dog.list.usecase.Result
 
 @Module
 class ListModule {
@@ -21,7 +22,7 @@ class ListModule {
     fun provideScreen(
         displayDogListUseCase: DisplayDogListUseCase,
         openDogDetailsUseCase: OpenDogDetailsUseCase
-    ) : Screen<ListInput, ListOutput, ListNavigation> = ListScreen(
+    ) : Screen<ListInput, ListOutput, ListNavigation, Result> = ListScreen(
         displayDogListUseCase,
         openDogDetailsUseCase,
         ListNavigationReducer(),

@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
-abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation>(
+abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, R: DomainResult>(
     private val reducingUiState: (Flow<DomainResult.UiUpdate>) -> Flow<O>,
     private val reducingNavigation: (Flow<DomainResult.Navigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
 ) {
@@ -30,7 +30,7 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation>(
             .receiveAsFlow()
             .flowOn(Dispatchers.Default)
 
-    protected abstract fun output(): Pair<Flow<O>, Flow<N>>
+    protected abstract fun output(): Flow<R>
 
     fun terminate() {
         scope.cancel()
@@ -40,6 +40,7 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation>(
         viewScope = CoroutineScope(Dispatchers.Main)
 
         val (out, nav) = output
+            .let(convertResultToOutput())
 
         return Attach(
             output = out,
@@ -52,7 +53,7 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation>(
         viewScope.cancel()
     }
 
-    fun convertResultToOutput(): (Flow<DomainResult>) -> Pair<Flow<O>, Flow<N>> =
+    private fun convertResultToOutput(): (Flow<R>) -> Pair<Flow<O>, Flow<N>> =
         { stream ->
             val upstream = stream.shareIn(scope, SharingStarted.Lazily)
 

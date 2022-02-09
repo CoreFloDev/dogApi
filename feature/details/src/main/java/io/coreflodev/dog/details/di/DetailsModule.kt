@@ -10,13 +10,15 @@ import io.coreflodev.dog.details.arch.DetailsOutput
 import io.coreflodev.dog.details.arch.DetailsScreen
 import io.coreflodev.dog.details.arch.DetailsUiReducer
 import io.coreflodev.dog.details.usecase.DisplayDogDetailsUseCase
+import io.coreflodev.dog.details.usecase.Result
 
 @Module
 class DetailsModule(private val imageId: String) {
 
     @Provides
     @DetailsScope
-    fun provideScreen(displayDogDetailsUseCase: DisplayDogDetailsUseCase): Screen<DetailsInput, DetailsOutput, DetailsNavigation> = DetailsScreen(displayDogDetailsUseCase, DetailsUiReducer())
+    fun provideScreen(displayDogDetailsUseCase: DisplayDogDetailsUseCase): Screen<DetailsInput, DetailsOutput, DetailsNavigation, Result> =
+        DetailsScreen(displayDogDetailsUseCase, DetailsUiReducer())
 
     @Provides
     @DetailsScope

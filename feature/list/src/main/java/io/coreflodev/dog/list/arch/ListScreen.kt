@@ -14,12 +14,16 @@ import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.shareIn
 
+@Suppress("UNCHECKED_CAST")
 class ListScreen(
     private val displayDogListUseCase: DisplayDogListUseCase,
     private val openDogDetailsUseCase: OpenDogDetailsUseCase,
     listNavigationReducer: ListNavigationReducer,
     listUiReducer: ListUiReducer
-) : Screen<ListInput, ListOutput, ListNavigation>(listUiReducer() as (Flow<DomainResult.UiUpdate>) -> Flow<ListOutput>, listNavigationReducer() as (Flow<DomainResult.Navigation>) -> Flow<ListNavigation>) {
+) : Screen<ListInput, ListOutput, ListNavigation, Result>(
+    listUiReducer() as (Flow<DomainResult.UiUpdate>) -> Flow<ListOutput>,
+    listNavigationReducer() as (Flow<DomainResult.Navigation>) -> Flow<ListNavigation>
+) {
 
     override fun output() = input()
         .let(inputToAction())
@@ -32,7 +36,6 @@ class ListScreen(
             )
                 .merge()
         }
-        .let(convertResultToOutput())
 
     companion object {
         fun inputToAction(): (Flow<ListInput>) -> Flow<Action> = { flow ->

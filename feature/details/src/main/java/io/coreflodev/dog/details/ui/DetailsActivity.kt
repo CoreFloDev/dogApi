@@ -29,11 +29,12 @@ import io.coreflodev.dog.details.arch.DetailsNavigation
 import io.coreflodev.dog.details.arch.DetailsOutput
 import io.coreflodev.dog.details.arch.UiState
 import io.coreflodev.dog.details.di.DetailsStateHolder
+import io.coreflodev.dog.details.usecase.Result
 import kotlinx.coroutines.flow.filterIsInstance
 
 class DetailsActivity : ComponentActivity() {
 
-    private lateinit var screen: Screen<DetailsInput, DetailsOutput, DetailsNavigation>
+    private lateinit var screen: Screen<DetailsInput, DetailsOutput, DetailsNavigation, Result>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
