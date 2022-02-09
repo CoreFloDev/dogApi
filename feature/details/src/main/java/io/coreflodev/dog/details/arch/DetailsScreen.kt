@@ -1,5 +1,6 @@
 package io.coreflodev.dog.details.arch
 
+import io.coreflodev.dog.common.arch.ResultUiUpdate
 import io.coreflodev.dog.common.arch.Screen
 import io.coreflodev.dog.details.usecase.Action
 import io.coreflodev.dog.details.usecase.DisplayDogDetailsUseCase
@@ -16,8 +17,9 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.flow.shareIn
 
 class DetailsScreen(
-    private val displayDogDetailsUseCase: DisplayDogDetailsUseCase
-) : Screen<DetailsInput, DetailsOutput, DetailsNavigation>() {
+    private val displayDogDetailsUseCase: DisplayDogDetailsUseCase,
+    detailsUiReducer: DetailsUiReducer
+) : Screen<DetailsInput, DetailsOutput, DetailsNavigation>(detailsUiReducer() as (Flow<ResultUiUpdate>) -> Flow<DetailsOutput>) {
 
     override fun output() = input()
         .let(inputToAction())
@@ -26,7 +28,7 @@ class DetailsScreen(
 
             upstream.filterIsInstance<Action.InitialAction>().let(displayDogDetailsUseCase())
         }
-        .let(convertResultToOutput(scope))
+        .let(convertResultToOutput())
 
     companion object {
         fun inputToAction(): (Flow<DetailsInput>) -> Flow<Action> = { flow ->
@@ -36,38 +38,6 @@ class DetailsScreen(
                 }
             }
                 .onStart { emit(Action.InitialAction) }
-        }
-
-        fun convertResultToOutput(clear: CoroutineScope): (Flow<Result>) -> Pair<Flow<DetailsOutput>, Flow<DetailsNavigation>> = { stream ->
-            val upstream = stream.shareIn(clear, SharingStarted.Lazily)
-
-            upstream.filterIsInstance<Result.UiUpdate>()
-                .let(reducingUiState())
-                .shareIn(clear, SharingStarted.Lazily, 1) to
-                    upstream.filterIsInstance<Result.Navigation>()
-                        .let(reducingNavigation())
-        }
-
-        private fun reducingUiState(): (Flow<Result.UiUpdate>) -> Flow<DetailsOutput.Display> = { stream ->
-            stream.scan(DetailsOutput.Display()) { previous, new ->
-                when (new) {
-                    is Result.UiUpdate.Display -> previous.copy(
-                        uiState = UiState.Display(
-                            name = new.name,
-                            image = new.image,
-                            wikiUrl = new.wikiUrl,
-                            origin = new.origin,
-                            temperament = new.temperament
-                        )
-                    )
-                    Result.UiUpdate.Retry -> previous.copy(uiState = UiState.Retry)
-                    Result.UiUpdate.Loading -> previous.copy(uiState = UiState.Loading)
-                }
-            }
-        }
-
-        private fun reducingNavigation(): (Flow<Result.Navigation>) -> Flow<DetailsNavigation> = { stream ->
-            stream.flatMapLatest { emptyFlow() }
         }
     }
 }

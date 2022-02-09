@@ -6,16 +6,21 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
-abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation> {
+abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation>(
+    private val reducingUiState: (Flow<ResultUiUpdate>) -> Flow<O>,
+    private val reducingNavigation: (Flow<ResultNavigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
+) {
 
-    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.Default)
-    protected val scope: CoroutineScope = CoroutineScope(Dispatchers.Default)
+    private var viewScope: CoroutineScope = CoroutineScope(Dispatchers.IO)
+    protected val scope: CoroutineScope = CoroutineScope(Dispatchers.IO)
 
     private val input: Channel<I> = Channel()
     private val output by lazy { output() }
@@ -47,7 +52,7 @@ abstract class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation> {
         viewScope.cancel()
     }
 
-    fun convertResultToOutput(reducingUiState: (Flow<ResultUiUpdate>) -> Flow<O>, reducingNavigation: (Flow<ResultNavigation>) -> Flow<N>):
+    fun convertResultToOutput():
                 (Flow<Any>) -> Pair<Flow<O>, Flow<N>> =
         { stream ->
             val upstream = stream.shareIn(scope, SharingStarted.Lazily)

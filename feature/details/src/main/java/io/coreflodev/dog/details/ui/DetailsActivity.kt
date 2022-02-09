@@ -45,10 +45,11 @@ class DetailsActivity : ComponentActivity() {
             .get(DetailsStateHolder::class.java)
             .screen
 
+        val (output, input) = screen.attach()
+
         setContent {
             DogApiTheme {
-                val (output, input) = screen.attach()
-                val state = output.filterIsInstance<DetailsOutput.Display>().collectAsState(initial = DetailsOutput.Display())
+                val state = output.collectAsState(initial = DetailsOutput())
                 BaseUi(id = R.string.detail_title) {
                     Content(output = state.value, input = input)
                 }
@@ -63,7 +64,7 @@ class DetailsActivity : ComponentActivity() {
 }
 
 @Composable
-fun Content(output: DetailsOutput.Display, input: (DetailsInput) -> Unit) {
+fun Content(output: DetailsOutput, input: (DetailsInput) -> Unit) {
 
     when (output.uiState) {
         is UiState.Display -> {

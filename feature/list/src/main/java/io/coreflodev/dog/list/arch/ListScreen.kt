@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.shareIn
 class ListScreen(
     private val displayDogListUseCase: DisplayDogListUseCase,
     private val openDogDetailsUseCase: OpenDogDetailsUseCase,
-    private val listNavigationReducer: ListNavigationReducer,
-    private val listUiReducer: ListUiReducer
-) : Screen<ListInput, ListOutput, ListNavigation>() {
+    listNavigationReducer: ListNavigationReducer,
+    listUiReducer: ListUiReducer
+) : Screen<ListInput, ListOutput, ListNavigation>(listUiReducer() as (Flow<ResultUiUpdate>) -> Flow<ListOutput>, listNavigationReducer() as (Flow<ResultNavigation>) -> Flow<ListNavigation>) {
 
     override fun output() = input()
         .let(inputToAction())
@@ -32,7 +32,7 @@ class ListScreen(
             )
                 .merge()
         }
-        .let(convertResultToOutput(listUiReducer() as (Flow<ResultUiUpdate>) -> Flow<ListOutput>, listNavigationReducer() as (Flow<ResultNavigation>) -> Flow<ListNavigation>))
+        .let(convertResultToOutput())
 
     companion object {
         fun inputToAction(): (Flow<ListInput>) -> Flow<Action> = { flow ->

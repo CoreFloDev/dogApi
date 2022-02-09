@@ -3,9 +3,7 @@ package io.coreflodev.dog.details.arch
 import io.coreflodev.dog.common.arch.ScreenNavigation
 import io.coreflodev.dog.common.arch.ScreenOutput
 
-sealed class DetailsOutput : ScreenOutput {
-    data class Display(val uiState: UiState = UiState.Loading) : DetailsOutput()
-}
+data class DetailsOutput(val uiState: UiState = UiState.Loading) : ScreenOutput
 
 sealed class DetailsNavigation : ScreenNavigation
 
