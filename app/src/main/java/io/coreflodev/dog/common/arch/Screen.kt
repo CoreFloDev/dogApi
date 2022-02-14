@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
-open class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : DomainAction, R : DomainResult>(
+class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : DomainAction, R : DomainResult>(
     private val reducingAction: (Flow<I>) -> Flow<A>,
     private val useCaseAggregator: UseCaseAggregator<A, R>,
     private val reducingUiState: (Flow<DomainResult.UiUpdate>) -> Flow<O>,

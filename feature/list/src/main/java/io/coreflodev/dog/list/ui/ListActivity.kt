@@ -26,52 +26,42 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
-import io.coreflodev.dog.common.arch.Screen
+import io.coreflodev.dog.common.arch.AndroidScreen
 import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.list.arch.ListInput
-import io.coreflodev.dog.list.arch.ListNavigation
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ScreenState
 import io.coreflodev.dog.list.di.ListStateHolder
-import io.coreflodev.dog.list.domain.Action
-import io.coreflodev.dog.list.domain.Result
 
 class ListActivity : ComponentActivity() {
-
-    private lateinit var screen: Screen<ListInput, ListOutput, ListNavigation, Action, Result>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        screen = ViewModelProvider(
+        val screen = ViewModelProvider(
             this,
             ListStateHolder.Factory(application)
         )
             .get(ListStateHolder::class.java)
             .screen
 
-        val (output, input, navigation) = screen.attach()
+        AndroidScreen(screen, this) { (output, input, navigation) ->
+            setContent {
+                DogApiTheme {
+                    val state = output.collectAsState(ListOutput())
 
-        setContent {
-            DogApiTheme {
-                val state = output.collectAsState(ListOutput())
+                    BaseUi(id = R.string.list_title) {
+                        Content(output = state.value, input = input)
+                    }
 
-                BaseUi(id = R.string.list_title) {
-                    Content(output = state.value, input = input)
-                }
-
-                LaunchedEffect(true) {
-                    navigation.collect { }
+                    LaunchedEffect(true) {
+                        navigation.collect { }
+                    }
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        screen.detach()
-        super.onDestroy()
     }
 }
 

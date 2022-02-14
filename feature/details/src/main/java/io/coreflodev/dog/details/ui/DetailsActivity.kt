@@ -19,48 +19,38 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
-import io.coreflodev.dog.common.arch.Screen
+import io.coreflodev.dog.common.arch.AndroidScreen
 import io.coreflodev.dog.common.nav.Navigation
 import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.details.arch.DetailsInput
-import io.coreflodev.dog.details.arch.DetailsNavigation
 import io.coreflodev.dog.details.arch.DetailsOutput
 import io.coreflodev.dog.details.arch.UiState
 import io.coreflodev.dog.details.di.DetailsStateHolder
-import io.coreflodev.dog.details.domain.Action
-import io.coreflodev.dog.details.domain.Result
 
 class DetailsActivity : ComponentActivity() {
-
-    private lateinit var screen: Screen<DetailsInput, DetailsOutput, DetailsNavigation, Action, Result>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        screen = ViewModelProvider(
+        val screen = ViewModelProvider(
             this,
             DetailsStateHolder.Factory(application, intent.getStringExtra(Navigation.DetailsActivityNav.ID) ?: "")
         )
             .get(DetailsStateHolder::class.java)
             .screen
 
-        val (output, input) = screen.attach()
-
-        setContent {
-            DogApiTheme {
-                val state = output.collectAsState(initial = DetailsOutput())
-                BaseUi(id = R.string.detail_title) {
-                    Content(output = state.value, input = input)
+        AndroidScreen(screen, this) { (output, input) ->
+            setContent {
+                DogApiTheme {
+                    val state = output.collectAsState(initial = DetailsOutput())
+                    BaseUi(id = R.string.detail_title) {
+                        Content(output = state.value, input = input)
+                    }
                 }
             }
         }
-    }
-
-    override fun onDestroy() {
-        screen.detach()
-        super.onDestroy()
     }
 }
 
