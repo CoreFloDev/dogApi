@@ -12,7 +12,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -20,8 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.AndroidScreen
+import io.coreflodev.dog.common.arch.AndroidView
 import io.coreflodev.dog.common.nav.Navigation
-import io.coreflodev.dog.common.theme.DogApiTheme
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.details.arch.DetailsInput
@@ -41,12 +40,11 @@ class DetailsActivity : ComponentActivity() {
             .get(DetailsStateHolder::class.java)
             .screen
 
-        AndroidScreen(screen, this) { (output, input) ->
+        AndroidScreen(screen, this) { attach ->
             setContent {
-                DogApiTheme {
-                    val state = output.collectAsState(initial = DetailsOutput())
+                AndroidView(initialValue = DetailsOutput(), attach = attach) { state, input ->
                     BaseUi(id = R.string.detail_title) {
-                        Content(output = state.value, input = input)
+                        Content(output = state, input = input)
                     }
                 }
             }

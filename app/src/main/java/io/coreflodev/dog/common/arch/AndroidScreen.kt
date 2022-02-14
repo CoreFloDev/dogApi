@@ -6,7 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 
 class AndroidScreen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : DomainAction, R : DomainResult>(
     private val screen: Screen<I,O, N, A, R>,
-    private val activity: ComponentActivity,
+    activity: ComponentActivity,
     private val callback: (Attach<I,O,N>) -> Unit
 ) : DefaultLifecycleObserver {
 

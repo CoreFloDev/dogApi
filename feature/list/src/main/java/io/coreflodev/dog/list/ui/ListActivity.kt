@@ -16,8 +16,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
 import io.coreflodev.dog.common.arch.AndroidScreen
-import io.coreflodev.dog.common.theme.DogApiTheme
+import io.coreflodev.dog.common.arch.AndroidView
 import io.coreflodev.dog.common.ui.BaseUi
 import io.coreflodev.dog.common.ui.LoadImage
 import io.coreflodev.dog.list.arch.ListInput
@@ -47,17 +45,11 @@ class ListActivity : ComponentActivity() {
             .get(ListStateHolder::class.java)
             .screen
 
-        AndroidScreen(screen, this) { (output, input, navigation) ->
+        AndroidScreen(screen, this) { attach ->
             setContent {
-                DogApiTheme {
-                    val state = output.collectAsState(ListOutput())
-
+                AndroidView(ListOutput(), attach) { state, input ->
                     BaseUi(id = R.string.list_title) {
-                        Content(output = state.value, input = input)
-                    }
-
-                    LaunchedEffect(true) {
-                        navigation.collect { }
+                        Content(output = state, input = input)
                     }
                 }
             }
