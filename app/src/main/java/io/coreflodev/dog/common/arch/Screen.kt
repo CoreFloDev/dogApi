@@ -15,8 +15,8 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
 
 class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : DomainAction, R : DomainResult>(
-    private val reducingAction: (Flow<I>) -> Flow<A>,
-    private val useCaseAggregator: UseCaseAggregator<A, R>,
+    reducingAction: (Flow<I>) -> Flow<A>,
+    useCaseAggregator: UseCaseAggregator<A, R>,
     private val reducingUiState: (Flow<DomainResult.UiUpdate>) -> Flow<O>,
     private val reducingNavigation: (Flow<DomainResult.Navigation>) -> Flow<N> = { flow -> flow.flatMapLatest { emptyFlow() } }
 ) {
@@ -26,6 +26,13 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
 
     private val input: Channel<I> = Channel()
 
+    private val output = input
+        .receiveAsFlow()
+        .flowOn(Dispatchers.Default)
+        .let(reducingAction)
+        .let(useCaseAggregator.execute(scope))
+        .let(convertResultToOutput())
+
     fun terminate() {
         scope.cancel()
     }
@@ -33,12 +40,7 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
     fun attach(): Attach<I, O, N> {
         viewScope = CoroutineScope(Dispatchers.Main)
 
-        val (out, nav) = input
-            .receiveAsFlow()
-            .flowOn(Dispatchers.Default)
-            .let(reducingAction)
-            .let(useCaseAggregator.execute(scope))
-            .let(convertResultToOutput())
+        val (out, nav) = output
 
         return Attach(
             output = out,
