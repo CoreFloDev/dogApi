@@ -7,7 +7,6 @@ import io.coreflodev.dog.common.theme.DogApiTheme
 
 @Composable
 fun <I : ScreenInput, O : ScreenOutput, N : ScreenNavigation> AndroidView(
-    initialValue: O,
     attach: Attach<I,O,N>,
     nav: ((N) -> Unit) = {},
     ui: @Composable (O, (I) -> Unit) -> Unit
@@ -15,9 +14,11 @@ fun <I : ScreenInput, O : ScreenOutput, N : ScreenNavigation> AndroidView(
     DogApiTheme {
         val (input, output, navigation) = attach
 
-        val state = output.collectAsState(initialValue)
+        val state = output.collectAsState(null)
 
-        ui.invoke(state.value, input)
+        state.value?.let {
+            ui.invoke(it, input)
+        }
 
         LaunchedEffect(true) {
             navigation.collect {

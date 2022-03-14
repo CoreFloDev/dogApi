@@ -47,7 +47,7 @@ class ListActivity : ComponentActivity() {
 
         AndroidScreen(screen, this) { attach ->
             setContent {
-                AndroidView(ListOutput(), attach) { state, input ->
+                AndroidView(attach) { state, input ->
                     BaseUi(id = R.string.list_title) {
                         Content(output = state, input = input)
                     }

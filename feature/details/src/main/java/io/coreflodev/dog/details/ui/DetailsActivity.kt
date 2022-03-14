@@ -42,7 +42,7 @@ class DetailsActivity : ComponentActivity() {
 
         AndroidScreen(screen, this) { attach ->
             setContent {
-                AndroidView(initialValue = DetailsOutput(), attach = attach) { state, input ->
+                AndroidView(attach) { state, input ->
                     BaseUi(id = R.string.detail_title) {
                         Content(output = state, input = input)
                     }
