@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-kapt'
     id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
+    id 'com.google.devtools.ksp' version "$kotlin_version-1.0.9"
 }
 
 android {
@@ -94,8 +94,8 @@ dependencies {
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
-    api 'com.google.dagger:dagger:2.45'
-    kapt 'com.google.dagger:dagger-compiler:2.45'
+    ksp("me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.1")
+    implementation("me.tatarka.inject:kotlin-inject-runtime:0.6.1")
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'app.cash.turbine:turbine:0.12.1'

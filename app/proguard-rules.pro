@@ -19,12 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
-
-# Kotlin serialization
--keep,includedescriptorclasses class io.coreflodev.dog.common.**$$serializer { *; }
--keepclassmembers class io.coreflodev.dog.common.** {
-    *** Companion;
-}
--keepclasseswithmembers class io.coreflodev.dog.common.** {
-    kotlinx.serialization.KSerializer serializer(...);
-}

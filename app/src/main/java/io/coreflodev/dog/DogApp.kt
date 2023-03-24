@@ -3,15 +3,12 @@ package io.coreflodev.dog
 import android.app.Application
 import android.content.Context
 import io.coreflodev.dog.common.di.AppComponent
-import io.coreflodev.dog.common.di.AppModule
-import io.coreflodev.dog.common.di.DaggerAppComponent
+import io.coreflodev.dog.common.di.create
 
 class DogApp : Application() {
 
     private val applicationComponent: AppComponent by lazy {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(baseContext))
-            .build()
+        AppComponent::class.create(baseContext)
     }
 
     companion object {

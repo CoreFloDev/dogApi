@@ -11,19 +11,10 @@ import io.coreflodev.dog.list.arch.ListNavigation
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.domain.Action
 import io.coreflodev.dog.list.domain.Result
-import javax.inject.Inject
 
-class ListStateHolder(app: Application): AndroidViewModel(app) {
+class ListStateHolder(app: Application) : AndroidViewModel(app) {
 
-    @Inject
-    lateinit var screen: Screen<ListInput, ListOutput, ListNavigation, Action, Result>
-
-    init {
-        DaggerListComponent.builder()
-            .appComponent(DogApp.appComponent(app))
-            .build()
-            .inject(this)
-    }
+    val screen: Screen<ListInput, ListOutput, ListNavigation, Action, Result> = ListComponent::class.create(DogApp.appComponent(app)).screen
 
     override fun onCleared() {
         super.onCleared()
