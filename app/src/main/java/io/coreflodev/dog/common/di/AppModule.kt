@@ -9,11 +9,10 @@ import io.coreflodev.dog.common.repo.dog.RestApiDogRepository
 import io.coreflodev.dog.common.repo.dog.network.DogApi
 import io.coreflodev.dog.common.repo.dog.network.DogApiImplementation
 import io.ktor.client.HttpClient
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.client.request.header
-import io.ktor.http.ContentType
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 @Module
@@ -32,9 +31,8 @@ class AppModule(private val context: Context) {
             }
         }
         // Json
-        install(JsonFeature) {
-            serializer = KotlinxSerializer(json)
-            accept(ContentType.Application.Json)
+        install(ContentNegotiation) {
+            json(json)
             charset("utf-8")
         }
 

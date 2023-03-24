@@ -1,1 +1,5 @@
 apply from: '../../feature_module_config.gradle'
+
+android {
+    namespace 'io.coreflodev.dog.details'
+}
