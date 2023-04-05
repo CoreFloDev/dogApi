@@ -1,11 +1,22 @@
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+pluginManagement {
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
     }
 }
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+        maven {
+            url "https://androidx.dev/storage/compose-compiler/repository/"
+        }
+    }
+}
 rootProject.name = "dogApi"
 include ':app'
-include ':feature:details'
-include ':feature:list'
+// load all features module
+file('./feature/').eachDir { sub -> include ':feature:' + sub.name }

@@ -1,7 +1,7 @@
 package io.coreflodev.dog.details.di
 
-import javax.inject.Scope
+import me.tatarka.inject.annotations.Scope
 
 @Scope
-@Retention
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER)
 annotation class DetailsScope

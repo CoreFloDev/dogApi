@@ -1,6 +1,6 @@
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
+apply plugin: 'com.google.devtools.ksp'
 
 android {
     compileSdk 33
@@ -38,11 +38,11 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-    api 'com.google.dagger:dagger:2.45'
-    kapt 'com.google.dagger:dagger-compiler:2.45'
+    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.1"
+    implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.1"
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'app.cash.turbine:turbine:0.12.1'
+    testImplementation 'app.cash.turbine:turbine:0.12.3'
     testImplementation "io.mockk:mockk:1.13.4"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 }
