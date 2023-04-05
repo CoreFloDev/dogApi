@@ -22,7 +22,7 @@ buildscript {
 }
 
 plugins {
-    id 'com.google.devtools.ksp' apply false
+    id 'com.google.devtools.ksp' version "$kotlin_version-1.0.10" apply false
 }
 
 tasks.register('clean', Delete) {

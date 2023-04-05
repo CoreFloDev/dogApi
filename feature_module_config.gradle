@@ -38,8 +38,8 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 
-    ksp("me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.1")
-    implementation("me.tatarka.inject:kotlin-inject-runtime:0.6.1")
+    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.1"
+    implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.1"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'app.cash.turbine:turbine:0.12.3'

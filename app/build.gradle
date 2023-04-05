@@ -60,7 +60,7 @@ android {
         }
     }
     namespace 'io.coreflodev.dog'
-    dynamicFeatures = [':feature:list',':feature:details']
+    file('../feature/').eachDir { sub -> dynamicFeatures << ':feature:' + sub.name }
 }
 
 dependencies {
@@ -94,8 +94,8 @@ dependencies {
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
-    ksp("me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.1")
-    implementation("me.tatarka.inject:kotlin-inject-runtime:0.6.1")
+    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.1"
+    implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.1"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'app.cash.turbine:turbine:0.12.3'

@@ -1,14 +1,8 @@
 pluginManagement {
     repositories {
-        maven {
-            url "https://androidx.dev/storage/compose-compiler/repository/"
-        }
         gradlePluginPortal()
         google()
         mavenCentral()
-    }
-    plugins {
-        id("com.google.devtools.ksp") version "1.8.20-1.0.10"
     }
 }
 dependencyResolutionManagement {
@@ -24,5 +18,5 @@ dependencyResolutionManagement {
 }
 rootProject.name = "dogApi"
 include ':app'
-include ':feature:details'
-include ':feature:list'
+// load all features module
+file('./feature/').eachDir { sub -> include ':feature:' + sub.name }
