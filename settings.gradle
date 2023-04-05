@@ -1,18 +1,25 @@
 pluginManagement {
     repositories {
+        maven {
+            url "https://androidx.dev/storage/compose-compiler/repository/"
+        }
         gradlePluginPortal()
         google()
         mavenCentral()
     }
     plugins {
-        id("com.google.devtools.ksp") version "1.8.10-1.0.9"
+        id("com.google.devtools.ksp") version "1.8.20-1.0.10"
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        gradlePluginPortal()
         google()
         mavenCentral()
+        maven {
+            url "https://androidx.dev/storage/compose-compiler/repository/"
+        }
     }
 }
 rootProject.name = "dogApi"

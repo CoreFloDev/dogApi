@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
-    id 'com.google.devtools.ksp' version "$kotlin_version-1.0.9"
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -89,8 +89,8 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
 
-    implementation "io.coil-kt:coil:2.2.2"
-    implementation "io.coil-kt:coil-compose:2.2.2"
+    implementation "io.coil-kt:coil:2.3.0"
+    implementation "io.coil-kt:coil-compose:2.3.0"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.10'
 
@@ -98,7 +98,7 @@ dependencies {
     implementation("me.tatarka.inject:kotlin-inject-runtime:0.6.1")
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation 'app.cash.turbine:turbine:0.12.1'
+    testImplementation 'app.cash.turbine:turbine:0.12.3'
     testImplementation "io.mockk:mockk:1.13.4"
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
 

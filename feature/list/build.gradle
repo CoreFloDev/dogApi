@@ -1,7 +1,3 @@
-plugins {
-    id 'com.google.devtools.ksp'
-}
-
 apply from: '../../feature_module_config.gradle'
 
 android {
