@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "dogApi"
 include(":app")
 // load all features module
-file('./feature/').eachDir { sub -> include ':feature:' + sub.name }
+file("./feature/").listFiles()?.forEach { sub -> include(":feature:" + sub.name) }
