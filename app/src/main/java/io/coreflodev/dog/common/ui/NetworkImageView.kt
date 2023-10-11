@@ -3,12 +3,12 @@ package io.coreflodev.dog.common.ui
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun LoadImage(url: String, modifier: Modifier = Modifier) {
     Image(
-        painter = rememberImagePainter(url),
+        painter = rememberAsyncImagePainter(url),
         contentDescription = null,
         modifier = modifier
     )

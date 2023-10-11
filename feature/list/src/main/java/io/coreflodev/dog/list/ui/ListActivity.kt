@@ -6,15 +6,16 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,15 +42,14 @@ class ListActivity : ComponentActivity() {
         val screen = ViewModelProvider(
             this,
             ListStateHolder.Factory(application)
-        )
-            .get(ListStateHolder::class.java)
+        )[ListStateHolder::class.java]
             .screen
 
         AndroidScreen(screen, this) { attach ->
             setContent {
                 AndroidView(attach) { state, input ->
                     BaseUi(id = R.string.list_title) {
-                        Content(output = state, input = input)
+                        Content(output = state, input = input, it)
                     }
                 }
             }
@@ -58,10 +58,10 @@ class ListActivity : ComponentActivity() {
 }
 
 @Composable
-fun Content(output: ListOutput, input: (ListInput) -> Unit) {
+fun Content(output: ListOutput, input: (ListInput) -> Unit, paddingValues: PaddingValues) {
     when (output.state) {
         is ScreenState.Display -> {
-            LazyColumn {
+            LazyColumn(contentPadding = paddingValues) {
                 items(output.state.list) { item ->
                     Box(
                         modifier = Modifier

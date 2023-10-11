@@ -5,12 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,15 +37,14 @@ class DetailsActivity : ComponentActivity() {
         val screen = ViewModelProvider(
             this,
             DetailsStateHolder.Factory(application, intent.getStringExtra(Navigation.DetailsActivityNav.ID) ?: "")
-        )
-            .get(DetailsStateHolder::class.java)
+        )[DetailsStateHolder::class.java]
             .screen
 
         AndroidScreen(screen, this) { attach ->
             setContent {
                 AndroidView(attach) { state, input ->
                     BaseUi(id = R.string.detail_title) {
-                        Content(output = state, input = input)
+                        Content(output = state, input = input, it)
                     }
                 }
             }
@@ -53,21 +53,24 @@ class DetailsActivity : ComponentActivity() {
 }
 
 @Composable
-fun Content(output: DetailsOutput, input: (DetailsInput) -> Unit) {
+fun Content(output: DetailsOutput, input: (DetailsInput) -> Unit, paddingValues: PaddingValues) {
 
     when (output.uiState) {
         is UiState.Display -> {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text(text = output.uiState.name)
-                LoadImage(
-                    url = output.uiState.image,
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(text = output.uiState.origin)
-                Text(text = output.uiState.temperament)
-                Text(text = output.uiState.wikiUrl)
+            Box(modifier = Modifier.padding(paddingValues)) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(text = output.uiState.name)
+                    LoadImage(
+                        url = output.uiState.image,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Text(text = output.uiState.origin)
+                    Text(text = output.uiState.temperament)
+                    Text(text = output.uiState.wikiUrl)
+                }
             }
         }
+
         UiState.Loading -> {
             Box(
                 contentAlignment = Alignment.Center,
@@ -76,6 +79,7 @@ fun Content(output: DetailsOutput, input: (DetailsInput) -> Unit) {
                 CircularProgressIndicator()
             }
         }
+
         UiState.Retry -> {
             Button(onClick = {
                 input(DetailsInput.RetryClicked)

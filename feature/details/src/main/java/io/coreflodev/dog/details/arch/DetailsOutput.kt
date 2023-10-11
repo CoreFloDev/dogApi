@@ -8,8 +8,8 @@ data class DetailsOutput(val uiState: UiState = UiState.Loading) : ScreenOutput
 sealed class DetailsNavigation : ScreenNavigation
 
 sealed class UiState {
-    object Loading : UiState()
-    object Retry : UiState()
+    data object Loading : UiState()
+    data object Retry : UiState()
 
     data class Display(
         val name: String,
