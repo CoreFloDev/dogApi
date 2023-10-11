@@ -1,26 +1,25 @@
 package io.coreflodev.dog.common.ui
 
 import androidx.annotation.StringRes
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BaseUi(@StringRes id: Int, content: @Composable () -> Unit) {
-    Surface(color = MaterialTheme.colors.background) {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text(stringResource(id)) }
-                )
-            },
-            content = {
-                content()
-            }
-        )
-    }
+fun BaseUi(@StringRes id: Int, content: @Composable (PaddingValues) -> Unit) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(id)) }
+            )
+        },
+        content = { padding ->
+            content(padding)
+        }
+    )
 }

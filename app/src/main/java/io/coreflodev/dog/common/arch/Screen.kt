@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.launch
@@ -28,7 +27,6 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
 
     private val output = input
         .receiveAsFlow()
-        .flowOn(Dispatchers.Default)
         .let(reducingAction)
         .let(useCaseAggregator.execute(scope))
         .let(convertResultToOutput())
@@ -38,7 +36,7 @@ class Screen<I : ScreenInput, O : ScreenOutput, N : ScreenNavigation, A : Domain
     }
 
     fun attach(): Attach<I, O, N> {
-        viewScope = CoroutineScope(Dispatchers.Main)
+        viewScope = CoroutineScope(Dispatchers.IO)
 
         val (out, nav) = output
 
