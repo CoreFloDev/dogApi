@@ -1,4 +1,4 @@
-package io.coreflodev.common.ui
+package io.coreflodev.dog.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable

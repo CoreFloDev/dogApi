@@ -1,6 +1,5 @@
 package io.coreflodev.common.di
 
-import android.content.Context
 import io.coreflodev.common.nav.Navigation
 import io.coreflodev.common.repo.DogRepository
 import io.coreflodev.common.repo.RestApiDogRepository
@@ -15,7 +14,7 @@ import kotlinx.serialization.json.Json
 import me.tatarka.inject.annotations.Provides
 
 abstract class AppModule(
-    open val nav: (context: Context) -> Navigation
+    open val nav: () -> Navigation
 ) {
 
     @Provides
@@ -50,5 +49,5 @@ abstract class AppModule(
 
     @Provides
     @AppScope
-    fun provideNavigation(context: Context): Navigation = nav(context)
+    fun provideNavigation(): Navigation = nav()
 }

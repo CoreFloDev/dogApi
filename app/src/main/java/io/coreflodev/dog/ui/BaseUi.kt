@@ -1,4 +1,4 @@
-package io.coreflodev.common.ui
+package io.coreflodev.dog.ui
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues

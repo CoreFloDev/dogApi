@@ -9,7 +9,7 @@ import io.coreflodev.dog.nav.AndroidNavigation
 class DogApp : Application() {
 
     private val applicationComponent: AppComponent by lazy {
-        AppComponent::class.create(baseContext) { context: Context -> AndroidNavigation(context) }
+        AppComponent::class.create { AndroidNavigation(baseContext) }
     }
 
     companion object {

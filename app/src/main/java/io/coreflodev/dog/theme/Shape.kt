@@ -1,4 +1,4 @@
-package io.coreflodev.common.theme
+package io.coreflodev.dog.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Shapes
