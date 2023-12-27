@@ -1,0 +1,81 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
+    id 'org.jetbrains.kotlin.plugin.serialization' version "$kotlin_version"
+}
+
+android {
+    namespace 'io.coreflodev.common'
+    compileSdk 34
+
+    defaultConfig {
+        minSdk 28
+        targetSdk 34
+        versionCode 1
+        versionName "1.0"
+    }
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    buildFeatures {
+        compose true
+        buildConfig true
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_compiler_version
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+        freeCompilerArgs += "-opt-in=kotlin.io.encoding.ExperimentalEncodingApi"
+    }
+}
+
+dependencies {
+
+    api 'androidx.core:core-ktx:1.12.0'
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$core_lib_desugaring"
+
+    api "androidx.compose.ui:ui:$compose_version"
+    api 'androidx.compose.material3:material3:1.2.0-beta01'
+    api "androidx.compose.ui:ui-tooling-preview:$compose_version"
+    api 'androidx.activity:activity-compose:1.8.2'
+
+    implementation "androidx.lifecycle:lifecycle-common-java8:2.6.2"
+
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+
+    // Http
+    implementation "io.ktor:ktor-client-json:$ktor_version"
+    implementation "io.ktor:ktor-client-serialization-jvm:$ktor_version"
+    implementation "io.ktor:ktor-serialization-kotlinx-json:$ktor_version"
+    implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
+    implementation "io.ktor:ktor-client-android:$ktor_version"
+
+    implementation(platform('com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.12'))
+    implementation("com.squareup.okhttp3:okhttp")
+
+    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.3"
+    implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.3"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2"
+
+    implementation 'io.coil-kt:coil:2.5.0'
+    implementation 'io.coil-kt:coil-compose:2.5.0'
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.12'
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'app.cash.turbine:turbine:1.0.0'
+    testImplementation 'io.mockk:mockk:1.13.8'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3'
+
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}

@@ -1,6 +1,6 @@
 package io.coreflodev.dog.list.arch
 
-import io.coreflodev.dog.common.arch.ScreenOutput
+import io.coreflodev.common.arch.ScreenOutput
 
 data class ListOutput(val state: ScreenState = ScreenState.Loading) : ScreenOutput
 

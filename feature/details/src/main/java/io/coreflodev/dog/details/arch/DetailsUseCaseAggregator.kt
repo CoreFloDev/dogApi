@@ -1,6 +1,6 @@
 package io.coreflodev.dog.details.arch
 
-import io.coreflodev.dog.common.arch.UseCaseAggregator
+import io.coreflodev.common.arch.UseCaseAggregator
 import io.coreflodev.dog.details.domain.Action
 import io.coreflodev.dog.details.domain.DisplayDogDetailsUseCase
 import io.coreflodev.dog.details.domain.Result

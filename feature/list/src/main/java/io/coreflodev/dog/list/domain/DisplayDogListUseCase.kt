@@ -1,7 +1,7 @@
 package io.coreflodev.dog.list.domain
 
-import io.coreflodev.dog.common.repo.dog.network.Dog
-import io.coreflodev.dog.common.repo.dog.DogRepository
+import io.coreflodev.common.repo.network.Dog
+import io.coreflodev.common.repo.DogRepository
 import io.coreflodev.dog.list.arch.UiDog
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

@@ -1,6 +1,6 @@
 package io.coreflodev.dog.list.arch
 
-import io.coreflodev.dog.common.nav.Navigation
+import io.coreflodev.common.nav.Navigation
 import io.coreflodev.dog.list.domain.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapConcat

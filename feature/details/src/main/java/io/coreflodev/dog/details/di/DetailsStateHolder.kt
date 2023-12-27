@@ -5,7 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.DogApp
-import io.coreflodev.dog.common.arch.Screen
+import io.coreflodev.common.arch.Screen
 import io.coreflodev.dog.details.arch.DetailsInput
 import io.coreflodev.dog.details.arch.DetailsNavigation
 import io.coreflodev.dog.details.arch.DetailsOutput

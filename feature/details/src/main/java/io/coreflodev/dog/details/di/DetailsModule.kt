@@ -1,8 +1,8 @@
 package io.coreflodev.dog.details.di
 
-import io.coreflodev.dog.common.arch.DomainResult
-import io.coreflodev.dog.common.arch.Screen
-import io.coreflodev.dog.common.repo.dog.DogRepository
+import io.coreflodev.common.arch.DomainResult
+import io.coreflodev.common.arch.Screen
+import io.coreflodev.common.repo.DogRepository
 import io.coreflodev.dog.details.arch.DetailsActionReducer
 import io.coreflodev.dog.details.arch.DetailsInput
 import io.coreflodev.dog.details.arch.DetailsNavigation

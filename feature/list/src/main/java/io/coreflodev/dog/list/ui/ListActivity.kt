@@ -25,10 +25,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
-import io.coreflodev.dog.common.arch.AndroidScreen
-import io.coreflodev.dog.common.arch.AndroidView
-import io.coreflodev.dog.common.ui.BaseUi
-import io.coreflodev.dog.common.ui.LoadImage
+import io.coreflodev.common.arch.AndroidScreen
+import io.coreflodev.common.arch.AndroidView
+import io.coreflodev.common.ui.BaseUi
+import io.coreflodev.common.ui.LoadImage
 import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListOutput
 import io.coreflodev.dog.list.arch.ScreenState

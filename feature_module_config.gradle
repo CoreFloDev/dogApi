@@ -6,7 +6,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdk 21
+        minSdk 28
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -17,6 +17,8 @@ android {
         kotlinCompilerExtensionVersion compose_compiler_version
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true
+
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
@@ -27,6 +29,8 @@ android {
 
 dependencies {
     implementation project(":app")
+
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$core_lib_desugaring"
 
     ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.3"
     implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.3"

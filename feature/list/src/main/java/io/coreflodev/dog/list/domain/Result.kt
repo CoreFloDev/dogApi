@@ -1,6 +1,6 @@
 package io.coreflodev.dog.list.domain
 
-import io.coreflodev.dog.common.arch.DomainResult
+import io.coreflodev.common.arch.DomainResult
 import io.coreflodev.dog.list.arch.UiDog
 
 sealed class Result : DomainResult {

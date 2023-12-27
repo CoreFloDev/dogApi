@@ -1,9 +1,9 @@
 package io.coreflodev.dog.list.di
 
-import io.coreflodev.dog.common.arch.DomainResult
-import io.coreflodev.dog.common.arch.Screen
-import io.coreflodev.dog.common.nav.Navigation
-import io.coreflodev.dog.common.repo.dog.DogRepository
+import io.coreflodev.common.arch.DomainResult
+import io.coreflodev.common.arch.Screen
+import io.coreflodev.common.nav.Navigation
+import io.coreflodev.common.repo.DogRepository
 import io.coreflodev.dog.list.arch.ListActionReducer
 import io.coreflodev.dog.list.arch.ListInput
 import io.coreflodev.dog.list.arch.ListNavigation

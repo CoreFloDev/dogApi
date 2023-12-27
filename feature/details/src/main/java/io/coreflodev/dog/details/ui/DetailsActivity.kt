@@ -19,15 +19,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import io.coreflodev.dog.R
-import io.coreflodev.dog.common.arch.AndroidScreen
-import io.coreflodev.dog.common.arch.AndroidView
-import io.coreflodev.dog.common.nav.Navigation
-import io.coreflodev.dog.common.ui.BaseUi
-import io.coreflodev.dog.common.ui.LoadImage
+import io.coreflodev.common.arch.AndroidScreen
+import io.coreflodev.common.arch.AndroidView
+import io.coreflodev.common.ui.BaseUi
+import io.coreflodev.common.ui.LoadImage
 import io.coreflodev.dog.details.arch.DetailsInput
 import io.coreflodev.dog.details.arch.DetailsOutput
 import io.coreflodev.dog.details.arch.UiState
 import io.coreflodev.dog.details.di.DetailsStateHolder
+import io.coreflodev.dog.nav.AndroidNavigation
 
 class DetailsActivity : ComponentActivity() {
 
@@ -36,7 +36,7 @@ class DetailsActivity : ComponentActivity() {
 
         val screen = ViewModelProvider(
             this,
-            DetailsStateHolder.Factory(application, intent.getStringExtra(Navigation.DetailsActivityNav.ID) ?: "")
+            DetailsStateHolder.Factory(application, intent.getStringExtra(AndroidNavigation.DetailsActivityNav.ID) ?: "")
         )[DetailsStateHolder::class.java]
             .screen
 

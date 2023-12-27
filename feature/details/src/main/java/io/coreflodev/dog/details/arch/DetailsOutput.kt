@@ -1,7 +1,7 @@
 package io.coreflodev.dog.details.arch
 
-import io.coreflodev.dog.common.arch.ScreenNavigation
-import io.coreflodev.dog.common.arch.ScreenOutput
+import io.coreflodev.common.arch.ScreenNavigation
+import io.coreflodev.common.arch.ScreenOutput
 
 data class DetailsOutput(val uiState: UiState = UiState.Loading) : ScreenOutput
 

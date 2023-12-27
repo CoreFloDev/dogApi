@@ -1,7 +1,7 @@
 package io.coreflodev.dog.details.di
 
-import io.coreflodev.dog.common.arch.Screen
-import io.coreflodev.dog.common.di.AppComponent
+import io.coreflodev.common.arch.Screen
+import io.coreflodev.common.di.AppComponent
 import io.coreflodev.dog.details.arch.DetailsInput
 import io.coreflodev.dog.details.arch.DetailsNavigation
 import io.coreflodev.dog.details.arch.DetailsOutput

@@ -1,6 +1,6 @@
 package io.coreflodev.dog.details.domain
 
-import io.coreflodev.dog.common.arch.DomainResult
+import io.coreflodev.common.arch.DomainResult
 
 sealed class Result : DomainResult {
     sealed class UiUpdate : Result(), DomainResult.UiUpdate {

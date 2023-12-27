@@ -5,6 +5,8 @@ buildscript {
         ktor_version = "2.3.7"
         compose_compiler_version = '1.5.7'
         compose_version = '1.6.0-beta-03'
+
+        core_lib_desugaring = "2.0.4"
     }
     repositories {
         google()
@@ -15,7 +17,7 @@ buildscript {
 
 plugins {
     id 'com.google.devtools.ksp' version "$kotlin_version-1.0.16" apply false
-    id("com.android.application") version '8.3.0-alpha18' apply false
+    id("com.android.application") version '8.3.0-beta01' apply false
     id("org.jetbrains.kotlin.android") version "$kotlin_version" apply false
 }
 
