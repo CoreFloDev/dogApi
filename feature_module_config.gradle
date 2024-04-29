@@ -1,6 +1,7 @@
 apply plugin: 'com.android.dynamic-feature'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.devtools.ksp'
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 android {
     compileSdk 34
@@ -13,9 +14,6 @@ android {
     buildFeatures {
         compose true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
-    }
     compileOptions {
         coreLibraryDesugaringEnabled true
 
@@ -25,6 +23,11 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
+}
+
+composeCompiler {
+    // Not required in final Kotlin 2.0.0 release
+    suppressKotlinVersionCompatibilityCheck = "$kotlin_version"
 }
 
 dependencies {

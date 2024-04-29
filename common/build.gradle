@@ -21,10 +21,6 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_compiler_version
-    }
     kotlinOptions {
         jvmTarget = '17'
         freeCompilerArgs += "-opt-in=kotlin.io.encoding.ExperimentalEncodingApi"
