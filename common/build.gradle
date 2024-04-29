@@ -45,7 +45,7 @@ dependencies {
     implementation "io.ktor:ktor-client-content-negotiation:$ktor_version"
     implementation "io.ktor:ktor-client-android:$ktor_version"
 
-    implementation(platform('com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.12'))
+    implementation(platform('com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.14'))
     implementation("com.squareup.okhttp3:okhttp")
 
     ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.3"
