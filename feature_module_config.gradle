@@ -25,11 +25,6 @@ android {
     }
 }
 
-composeCompiler {
-    // Not required in final Kotlin 2.0.0 release
-    suppressKotlinVersionCompatibilityCheck = "$kotlin_version"
-}
-
 dependencies {
     implementation project(":app")
 

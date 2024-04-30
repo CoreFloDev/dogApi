@@ -63,11 +63,6 @@ android {
     file('../feature/').eachDir { sub -> dynamicFeatures << ':feature:' + sub.name }
 }
 
-composeCompiler {
-    // Not required in final Kotlin 2.0.0 release
-    suppressKotlinVersionCompatibilityCheck = "$kotlin_version"
-}
-
 dependencies {
     api project(":common")
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$core_lib_desugaring"
