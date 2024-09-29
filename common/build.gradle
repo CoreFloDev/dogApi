@@ -7,11 +7,11 @@ plugins {
 
 android {
     namespace 'io.coreflodev.common'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         minSdk 28
-        targetSdk 34
+        targetSdk 35
     }
     compileOptions {
         coreLibraryDesugaringEnabled true
@@ -26,11 +26,11 @@ android {
 }
 
 dependencies {
-    api 'androidx.core:core-ktx:1.13.0'
+    api 'androidx.core:core-ktx:1.13.1'
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$core_lib_desugaring"
 
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0'
-    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0'
+    api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0'
 
     // Http
     implementation "io.ktor:ktor-client-json:$ktor_version"
@@ -42,13 +42,13 @@ dependencies {
     implementation(platform('com.squareup.okhttp3:okhttp-bom:5.0.0-alpha.14'))
     implementation("com.squareup.okhttp3:okhttp")
 
-    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.3"
-    implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.3"
+    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2"
+    implementation "me.tatarka.inject:kotlin-inject-runtime:0.7.2"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'app.cash.turbine:turbine:1.1.0'
-    testImplementation 'io.mockk:mockk:1.13.10'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0'
+    testImplementation 'io.mockk:mockk:1.13.12'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0'
 }

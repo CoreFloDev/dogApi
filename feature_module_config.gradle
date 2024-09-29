@@ -4,7 +4,7 @@ apply plugin: 'com.google.devtools.ksp'
 apply plugin: 'org.jetbrains.kotlin.plugin.compose'
 
 android {
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         minSdk 28
@@ -30,11 +30,11 @@ dependencies {
 
     coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:$core_lib_desugaring"
 
-    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.6.3"
-    implementation "me.tatarka.inject:kotlin-inject-runtime:0.6.3"
+    ksp "me.tatarka.inject:kotlin-inject-compiler-ksp:0.7.2"
+    implementation "me.tatarka.inject:kotlin-inject-runtime:0.7.2"
 
     testImplementation 'junit:junit:4.13.2'
     testImplementation 'app.cash.turbine:turbine:1.1.0'
-    testImplementation "io.mockk:mockk:1.13.10"
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0'
+    testImplementation "io.mockk:mockk:1.13.12"
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0'
 }
